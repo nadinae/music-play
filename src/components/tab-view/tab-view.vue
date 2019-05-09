@@ -8,14 +8,24 @@
 </template>
 <script>
 export default {
-    
+
 }
 </script>
-<style>
+<style scope>
 .router {
     justify-content: space-around;
+    height:.66rem;
 }
 .router a{
     color:#fff;
+    display:block;
+    height:100%;
+    display:flex;
+    align-items:center;
+    border-bottom:1px solid rgba(0,0,0,0)
+}
+.router .router-link-active{
+  border-bottom:1px solid rgb(245, 203, 66);
+  color:rgb(245, 203, 66);
 }
 </style>

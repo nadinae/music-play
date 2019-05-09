@@ -1,10 +1,20 @@
 <template>
-    <div>1111111111111111</div>
+    <div>
+      <div>
+        <Scroll>
+          这是一段文字
+        </Scroll>
+      </div>
+    </div>
 </template>
 <script>
+import Scroll from 'base/scroll/scroll'
 import {getRecommend} from 'api/recommend'
 import {ERR_OK} from 'api/config'
 export default {
+    components:{
+      Scroll,
+    },
     created(){
         this._getRecommend()
     },
@@ -19,7 +29,7 @@ export default {
     }
 }
 </script>
-<style>
+<style scoped>
 div{
     color:#fff;
 }

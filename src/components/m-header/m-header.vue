@@ -9,7 +9,7 @@ export default {
     name:'m-header'
 }
 </script>
-<style scope>
+<style scoped>
     div{
         width:100%;
         height:.88rem;
