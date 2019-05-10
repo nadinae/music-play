@@ -2,7 +2,9 @@
   <div id="app">
     <MHeader />
     <TabView />
-    <router-view></router-view>
+    <keep-alive>
+      <router-view></router-view>
+    </keep-alive>
   </div>
 </template>
 
@@ -20,6 +22,6 @@ export default {
 
 <style>
 body{
-  background:#000;
+  background:#f4f4f4;
 }
 </style>

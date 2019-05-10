@@ -24,7 +24,7 @@ export default {
     }
     p{
         font-size:.32rem;
-        color:#fff;
+        color:#000;
         margin-left:.2rem;
     }
 </style>

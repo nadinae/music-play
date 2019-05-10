@@ -11,13 +11,13 @@ export default {
 
 }
 </script>
-<style scope>
+<style>
 .router {
     justify-content: space-around;
     height:.66rem;
 }
 .router a{
-    color:#fff;
+    color:rgba(0,0,0,.6);;
     display:block;
     height:100%;
     display:flex;
@@ -25,7 +25,7 @@ export default {
     border-bottom:1px solid rgba(0,0,0,0)
 }
 .router .router-link-active{
-  border-bottom:1px solid rgb(245, 203, 66);
-  color:rgb(245, 203, 66);
+  border-bottom:1px solid #31c27c;
+  color:#31c27c;
 }
 </style>
