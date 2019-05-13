@@ -1,19 +1,19 @@
 <template>
     <div class="recommend">
-          <Slider class="slider-content">
-              <mt-swipe v-if="recommends.length" :auto="4000" class="slider flex">
-                  <mt-swipe-item v-for="(item,index) in recommends" class="slider-item" :key="index">
-                      <a :href="item.linkUrl">
-                          <img :src="item.picUrl">
-                      </a>
-                  </mt-swipe-item>
-              </mt-swipe>
-          </Slider>
+        <Slider class="slider-content">
+            <mt-swipe v-if="recommends.length" :auto="4000" class="slider flex">
+                <mt-swipe-item v-for="(item,index) in recommends" class="slider-item" :key="index">
+                    <a :href="item.linkUrl">
+                        <img :src="item.picUrl">
+                    </a>
+                </mt-swipe-item>
+            </mt-swipe>
+        </Slider>
         <div class="recommend-list">
             <h1 class="list-title">热门歌单推荐</h1>
             <ul>
               <li v-for="(item,index) in DicsData" :key="index" class="flex">
-                <img :src="item.imgurl">
+                <img v-lazy="item.imgurl">
                 <div>
                   <h2>{{ item.creator.name }}</h2>
                   <p>{{ item.dissname }}</p>
@@ -21,10 +21,12 @@
               </li>
             </ul>
         </div>
+        <Loading v-if="!DicsData"></Loading>
     </div>
 </template>
 <script>
 import Slider from 'base/slider/slider'
+import Loading from 'base/loading/loading'
 import {getRecommend,getDiscList} from 'api/recommend'
 import {ERR_OK} from 'api/config'
 
@@ -36,7 +38,8 @@ export default {
         }
     },
     components:{
-      Slider
+      Slider,
+      Loading
     },
     created(){
         this._getRecommend()

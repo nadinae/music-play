@@ -9,6 +9,14 @@ import MintUI from 'mint-ui'
 import 'mint-ui/lib/style.css'
 import './common/js/px2rem.js'
 import './common/css/common.css'
+import VueLazyload from 'vue-lazyload'
+
+Vue.use(VueLazyload)
+
+// or with options
+Vue.use(VueLazyload, {
+  loading: require('./common/image/icon.png'),
+})
 
 Vue.config.productionTip = false
 Vue.use(MintUI)
