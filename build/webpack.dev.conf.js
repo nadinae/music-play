@@ -15,7 +15,12 @@ var express = require('express')
 var axios = require('axios')
 var app = express()
 var apiRoutes = express.Router()
-
+app.all('*', function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "X-Requested-With,Content-Type");
+  res.header("Access-Control-Allow-Methods","PUT,POST,GET,DELETE,OPTIONS");
+  next();
+});
 app.use('/api', apiRoutes)
 
 
@@ -72,9 +77,8 @@ const devWebpackConfig = merge(baseWebpackConfig, {
         var url = 'https://u.y.qq.com/cgi-bin/musicu.fcg'
         axios.get(url, {
           headers: {
-            referer: 'https://y.qq.com/portal/singer_list.html',
-            host: 'c.y.qq.com',
-            'access-control-allow-origin':'https://y.qq.com'
+            // referer: 'https://y.qq.com/portal/singer_list.html',
+            // Origin: 'y.qq.com'
           },
           params: req.query
         }).then((response) => {
