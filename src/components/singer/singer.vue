@@ -1,13 +1,21 @@
 <template>
   <div class="singer">
-    <div v-for="(item,index) in singerList" :key="index" class="flex">
-      <img :src="`https://y.gtimg.cn/music/photo_new/T001R150x150M000${item.singer_mid}.jpg?max_age=2592000`" alt="">
-      <p>{{ item.singer_name }}</p>
+    <div v-for="(group,index) in singerList" :key="index" class="singerList">
+      <h2>{{ group.title }}</h2>
+      <ul class="singer">
+        <li v-for="(item,index2) in group.item" :key="index2" class="flex">
+          <img v-lazy="`https://y.gtimg.cn/music/photo_new/T001R300x300M000${item.imgSrc}.jpg?max_age=2592000`" alt="">
+          <p>{{ item.singerName }}</p>
+        </li>
+      </ul>
     </div>
   </div>
 </template>
 <script>
 import { getSingerList } from 'api/getSingerList'
+
+const HOT_SINGER_LEN = 10;
+const HOT_NAME = '热门';
 export default {
     data(){
       return {
@@ -20,12 +28,69 @@ export default {
     methods:{
       _getSingerList(){
         getSingerList().then((res)=>{
-            this.singerList = res.singerList.data.singerlist;
+          this.singerList = this._initSingetList(res.data.list);
         })
+      },
+      _initSingetList(list){
+        let map = {
+          hot:{
+            title:HOT_NAME,
+            item:[]
+          }
+        }
+        list.forEach((item,index)=>{
+          if(index < HOT_SINGER_LEN){
+            map.hot.item.push({
+              imgSrc : item.Fsinger_mid,
+              singerName:item.Fsinger_name
+            })
+          }
+          const key = list[index].Findex;
+          if(!map[key]){
+            map[key]={
+              title:key,
+              item:[]
+            }
+          }
+          map[key].item.push({
+            imgSrc : item.Fsinger_mid,
+            singerName:item.Fsinger_name
+          })
+        })
+
+        //获取一个有序的列表
+        let hot = [];
+        let res = [];
+
+        for(let key in map){
+          let val = map[key];
+          if(val.title.match(/[a-zA-Z]/)){
+            res.push(val)
+          }else if(val.title == HOT_NAME){
+            hot.push(val)
+          }
+        }
+        res.sort((a,b)=>{
+          return a.title.charCodeAt(0) - b.title.charCodeAt(0)
+        })
+        return hot.concat(res)
       }
     }
 }
 </script>
-<style>
-
+<style scoped>
+h2{
+  padding:.1rem 0 .1rem .4rem;
+  font-size:.36rem;
+  background:#fff;
+}
+.singer li{
+  align-items: center;
+}
+.singer li img{
+  width:1rem;
+  height:1rem;
+  border-radius:.5rem;
+  margin:.2rem .4rem;
+}
 </style>

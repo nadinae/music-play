@@ -15,6 +15,7 @@ export default {
 .router {
     justify-content: space-around;
     height:.66rem;
+    margin-bottom:.1rem;
 }
 .router a{
     color:rgba(0,0,0,.6);;
