@@ -1,13 +1,16 @@
 <template>
-  <div class="singer">
+  <div class="singer" ref="singer">
     <div v-for="(group,index) in singerList" :key="index" class="singerList">
       <h2>{{ group.title }}</h2>
-      <ul class="singer">
+      <ul>
         <li v-for="(item,index2) in group.item" :key="index2" class="flex">
           <img v-lazy="`https://y.gtimg.cn/music/photo_new/T001R300x300M000${item.imgSrc}.jpg?max_age=2592000`" alt="">
           <p>{{ item.singerName }}</p>
         </li>
       </ul>
+    </div>
+    <div class="listTab" ref="listTab">
+      <p v-for="(item,index) in listTab" :key="index" @click="_getActList(index)" :class="actIndex == index ? 'active' : ''">{{ item }}</p>
     </div>
   </div>
 </template>
@@ -19,7 +22,9 @@ const HOT_NAME = '热门';
 export default {
     data(){
       return {
-        singerList:[]
+        singerList:[],
+        listTab:[],
+        actIndex:0
       }
     },
     created(){
@@ -29,6 +34,9 @@ export default {
       _getSingerList(){
         getSingerList().then((res)=>{
           this.singerList = this._initSingetList(res.data.list);
+          this.listTab = this.singerList.map((item)=>{
+            return item.title.substring(0,1)
+          })
         })
       },
       _initSingetList(list){
@@ -74,15 +82,24 @@ export default {
           return a.title.charCodeAt(0) - b.title.charCodeAt(0)
         })
         return hot.concat(res)
-      }
+      },
+      _getActList(index){
+        this.actIndex = index;
+        window.scrollTo(0, this.$refs.singer.children[index].offsetTop);
+      },
     }
 }
 </script>
 <style scoped>
+.singer {
+  position:absolute;
+  top:11.8vh;
+  width:100%;
+}
 h2{
   padding:.1rem 0 .1rem .4rem;
   font-size:.36rem;
-  background:#fff;
+  background:rgba(204, 204, 204, 0.3);
 }
 .singer li{
   align-items: center;
@@ -92,5 +109,19 @@ h2{
   height:1rem;
   border-radius:.5rem;
   margin:.2rem .4rem;
+}
+.listTab{
+  position:fixed;
+  top:18vh;
+  right:3vw;
+}
+.listTab p{
+  width:22px;
+  height:22px;
+  text-align: center;
+  line-height:22px;
+}
+.active{
+  color:#31c27c;
 }
 </style>

@@ -62,6 +62,9 @@ export default {
 }
 </script>
 <style>
+.recommend{
+  padding-top:13vh;
+}
 .list-title{
   font-size:.24rem;
   text-align:center;

@@ -14,8 +14,13 @@ export default {
 <style>
 .router {
     justify-content: space-around;
-    height:.66rem;
-    margin-bottom:.1rem;
+    height:5vh;
+    position:fixed;
+    top:6.8vh;
+    left:0;
+    width:100%;
+    background:#fff;
+    z-index:10;
 }
 .router a{
     color:rgba(0,0,0,.6);;
