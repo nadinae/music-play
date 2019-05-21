@@ -1,17 +1,17 @@
 <template>
   <div class="singer" ref="singer">
-    <div v-for="(group,index) in singerList" :key="index" class="singerList">
-      <h2>{{ group.title }}</h2>
-      <ul>
-        <li v-for="(item,index2) in group.item" :key="index2" class="flex">
-          <img v-lazy="`https://y.gtimg.cn/music/photo_new/T001R300x300M000${item.imgSrc}.jpg?max_age=2592000`" alt="">
-          <p>{{ item.singerName }}</p>
-        </li>
-      </ul>
+    <div class="singerView">
+      <div v-for="(group,index) in singerList" :key="index" class="singerList">
+        <h2>{{ group.title }}</h2>
+        <ul>
+          <li v-for="(item,index2) in group.item" :key="index2" class="flex" @click="goDetial(item.imgSrc)">
+            <img v-lazy="`https://y.gtimg.cn/music/photo_new/T001R300x300M000${item.imgSrc}.jpg?max_age=2592000`" alt="">
+            <p>{{ item.singerName }}</p>
+          </li>
+        </ul>
+      </div>
     </div>
-    <div class="listTab" ref="listTab">
-      <p v-for="(item,index) in listTab" :key="index" @click="_getActList(index)" :class="actIndex == index ? 'active' : ''">{{ item }}</p>
-    </div>
+    <router-view></router-view>
   </div>
 </template>
 <script>
@@ -23,7 +23,6 @@ export default {
     data(){
       return {
         singerList:[],
-        listTab:[],
         actIndex:0
       }
     },
@@ -31,12 +30,15 @@ export default {
       this._getSingerList()
     },
     methods:{
+      goDetial(singerId){
+        console.log(singerId)
+        this.$router.push({
+          path:`/singer/${singerId}`
+        })
+      },
       _getSingerList(){
         getSingerList().then((res)=>{
           this.singerList = this._initSingetList(res.data.list);
-          this.listTab = this.singerList.map((item)=>{
-            return item.title.substring(0,1)
-          })
         })
       },
       _initSingetList(list){
@@ -93,8 +95,10 @@ export default {
 <style scoped>
 .singer {
   position:absolute;
-  top:11.8vh;
+  padding-top:11.8vh;
+  overflow-y:scroll;
   width:100%;
+  height:88.2vh;
 }
 h2{
   padding:.1rem 0 .1rem .4rem;
