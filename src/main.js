@@ -10,6 +10,7 @@ import 'mint-ui/lib/style.css'
 import './common/js/px2rem.js'
 import './common/css/common.css'
 import VueLazyload from 'vue-lazyload'
+import store from './store'
 
 Vue.use(VueLazyload)
 
@@ -25,6 +26,7 @@ fastclick.attach(document.body)
 new Vue({
   el: '#app',
   router,
+  store,
   components: { App },
   template: '<App/>'
 })

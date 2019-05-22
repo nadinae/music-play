@@ -1,7 +1,7 @@
 <template>
   <div class="singerDetial">
     <div class="header flex">
-      <i></i>
+      <i @click="goBack"></i>
       <h1>{{ singerInfo.singer_name }}</h1>
     </div>
     <div class="singetImg" v-if="singerInfo.singer_mid">
@@ -58,7 +58,14 @@ export default {
       this.singerInfo = res.data;
       console.log(this.singerInfo)
     })
+    this.$store.dispatch('ctrChangeName')
+    console.log(this.$store.state.name)
   },
+  methods:{
+    goBack(){
+      this.$router.back()
+    }
+  }
 }
 </script>
 <style scoped>
