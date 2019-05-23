@@ -2,7 +2,7 @@
   <div class="singerDetial">
     <div class="header flex">
       <i @click="goBack"></i>
-      <h1>{{ singerInfo.singer_name }}</h1>
+      <h1>{{ singer.singerName }}</h1>
     </div>
     <div class="singetImg" v-if="singerInfo.singer_mid">
       <div :style="bgStyle" class="bgImg flex">
@@ -24,7 +24,8 @@
 </template>
 <script>
 import jsonp from 'common/js/jsonp'
-import {commonParams,options} from '../../api/config'
+import { commonParams,options } from '../../api/config'
+import { mapGetters } from 'vuex'
 export default {
   data(){
     return {
@@ -32,9 +33,11 @@ export default {
     }
   },
   computed: {
+    ...mapGetters([
+      'singer'
+    ]),
     bgStyle() {
-      console.log(this.singerInfo.singer_mid)
-      return `background-image:url(https://y.gtimg.cn/music/photo_new/T001R300x300M000${this.singerInfo.singer_mid}.jpg?max_age=2592000)`
+      return `background-image:url(${this.singer.singerSrc})`
     }
   },
   created(){
@@ -52,14 +55,12 @@ export default {
       begin: 0,
       num: 80,
       songstatus: 1,
-      singermid: this.$route.params.id,
+      singermid: this.singer.imgSrc,
     }
     jsonp('https://c.y.qq.com/v8/fcg-bin/fcg_v8_singer_track_cp.fcg', data, options).then((res)=>{
       this.singerInfo = res.data;
-      console.log(this.singerInfo)
     })
-    this.$store.dispatch('ctrChangeName')
-    console.log(this.$store.state.name)
+    console.log(this.singer)
   },
   methods:{
     goBack(){
