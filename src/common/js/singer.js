@@ -1,4 +1,4 @@
-export default class singer{
+export default class Singer{
   constructor({imgSrc, singerName}){
     this.imgSrc = imgSrc;
     this.singerName = singerName;
