@@ -1,7 +1,7 @@
 <template>
   <div class="songList">
       <ul>
-        <li v-for="(item,index) in singerInfo">
+        <li v-for="(item,index) in singerInfo" @click="chosePlaySong(item,index)">
           <h3>{{ item.name }}</h3>
           <p>{{ item.singer+'-'+ item.album}}</p>
         </li>
@@ -9,6 +9,7 @@
     </div>
 </template>
 <script>
+import { mapActions } from 'vuex'
 export default {
   props:{
     singerInfo:{
@@ -16,6 +17,17 @@ export default {
       default: () => []
     }
   },
+  methods:{
+    chosePlaySong(item,index){
+     this.selectPlay({
+       list:this.singerInfo,
+       index:index 
+     })
+    },
+     ...mapActions([
+       'selectPlay'
+     ])
+  }
 }
 </script>
 <style scoped>
