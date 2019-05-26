@@ -2,9 +2,9 @@
   <div class="singerDetial">
     <div class="header flex">
       <i @click="goBack"></i>
-      <h1>{{ singerInfo.singer_name }}</h1>
+      <h1>{{ singer.singerName }}</h1>
     </div>
-    <div class="singetImg" v-if="singerInfo.singer_mid">
+    <div class="singetImg">
       <div :style="bgStyle" class="bgImg flex">
         <div class="flex">
           <i></i>
@@ -12,29 +12,30 @@
         </div>
       </div>
     </div>
-    <div class="songList">
-      <ul>
-        <li v-for="(item,index) in singerInfo.list">
-          <h3>{{ item.musicData.songname }}</h3>
-          <p>{{ singerInfo.singer_name+'-'+ item.musicData.albumname}}</p>
-        </li>
-      </ul>
-    </div>
+    <SongList :singerInfo="singerInfo"></SongList>
   </div>
 </template>
 <script>
 import jsonp from 'common/js/jsonp'
-import {commonParams,options} from '../../api/config'
+import { commonParams,options } from '../../api/config'
+import { mapGetters } from 'vuex'
+import SongList from 'base/song-list/song-list'
+import {createList} from 'common/js/song'
 export default {
   data(){
     return {
       singerInfo:[]
     }
   },
+  components:{
+    SongList,
+  },
   computed: {
+    ...mapGetters([
+      'singer'
+    ]),
     bgStyle() {
-      console.log(this.singerInfo.singer_mid)
-      return `background-image:url(https://y.gtimg.cn/music/photo_new/T001R300x300M000${this.singerInfo.singer_mid}.jpg?max_age=2592000)`
+      return `background-image:url(${this.singer.singerSrc})`
     }
   },
   created(){
@@ -52,18 +53,28 @@ export default {
       begin: 0,
       num: 80,
       songstatus: 1,
-      singermid: this.$route.params.id,
+      singermid: this.singer.imgSrc,
+    }
+
+    if (!this.singer.singerName) {
+      this.$router.push('/singer')
+      return
     }
     jsonp('https://c.y.qq.com/v8/fcg-bin/fcg_v8_singer_track_cp.fcg', data, options).then((res)=>{
-      this.singerInfo = res.data;
-      console.log(this.singerInfo)
+      // this.singerInfo = res.data.list;
+      this.singerInfo = this.setSongList(res.data.list);
     })
-    this.$store.dispatch('ctrChangeName')
-    console.log(this.$store.state.name)
   },
   methods:{
     goBack(){
       this.$router.back()
+    },
+    setSongList(list){
+      let ret = [];
+      list.forEach((item) => {
+        ret.push(createList(item.musicData))
+      })
+      return ret;
     }
   }
 }
@@ -86,7 +97,7 @@ export default {
     position:absolute;
     top:0;
     left:0;
-    width:100%;
+    width:96%;
   }
   .header i{
     display:block;
@@ -134,24 +145,5 @@ export default {
     background:url(../../common/image/play.png) no-repeat;
     background-size:100%;
     margin-right:8px;
-  }
-  .songList{
-    width:90%;
-    margin:0 auto;
-  }
-  .songList li{
-    margin-top:20px;
-  }
-  .songList h3,.songList p{
-    width:100%;
-    text-overflow: ellipsis;
-    overflow: hidden;
-    white-space: nowrap;
-    font-size:16px;
-    line-height:20px;
-  }
-  .songList p{
-    color:rgba(0,0,0,.5);
-    margin-top:4px;
   }
 </style>

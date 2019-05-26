@@ -1,7 +1,9 @@
-import * as types from './mutations-type'
+import * as type from './mutation-types'
 
 const mutations = {
-    [types.SRT_SINGER](){
-        this.singer = singer;
-    }
+  [type.SET_SINGER](state,singer){
+    state.singer = singer
+  }
 }
+
+export default mutations

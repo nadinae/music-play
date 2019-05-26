@@ -4,8 +4,8 @@
       <div v-for="(group,index) in singerList" :key="index" class="singerList">
         <h2>{{ group.title }}</h2>
         <ul>
-          <li v-for="(item,index2) in group.item" :key="index2" class="flex" @click="goDetial(item.imgSrc)">
-            <img v-lazy="`https://y.gtimg.cn/music/photo_new/T001R300x300M000${item.imgSrc}.jpg?max_age=2592000`" alt="">
+          <li v-for="(item,index2) in group.item" :key="index2" class="flex" @click="goDetial(item)">
+            <img v-lazy="item.singerSrc" alt="">
             <p>{{ item.singerName }}</p>
           </li>
         </ul>
@@ -16,6 +16,8 @@
 </template>
 <script>
 import { getSingerList } from 'api/getSingerList'
+import Singer from 'common/js/singer'
+import { mapMutations } from 'vuex'
 
 const HOT_SINGER_LEN = 10;
 const HOT_NAME = '热门';
@@ -30,11 +32,11 @@ export default {
       this._getSingerList()
     },
     methods:{
-      goDetial(singerId){
-        console.log(singerId)
+      goDetial(singer){
         this.$router.push({
-          path:`/singer/${singerId}`
+          path:`/singer/${singer.imgSrc}`
         })
+        this.setSingerInfo(singer);
       },
       _getSingerList(){
         getSingerList().then((res)=>{
@@ -50,10 +52,10 @@ export default {
         }
         list.forEach((item,index)=>{
           if(index < HOT_SINGER_LEN){
-            map.hot.item.push({
+            map.hot.item.push(new Singer({
               imgSrc : item.Fsinger_mid,
               singerName:item.Fsinger_name
-            })
+            }))
           }
           const key = list[index].Findex;
           if(!map[key]){
@@ -62,11 +64,12 @@ export default {
               item:[]
             }
           }
-          map[key].item.push({
+          map[key].item.push(new Singer({
             imgSrc : item.Fsinger_mid,
             singerName:item.Fsinger_name
-          })
+          }))
         })
+
 
         //获取一个有序的列表
         let hot = [];
@@ -89,6 +92,9 @@ export default {
         this.actIndex = index;
         window.scrollTo(0, this.$refs.singer.children[index].offsetTop);
       },
+      ...mapMutations({
+        setSingerInfo:'SET_SINGER'
+      })
     }
 }
 </script>
