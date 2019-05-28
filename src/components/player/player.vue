@@ -9,6 +9,7 @@
                 <h1>{{ currentSong.name }}</h1>
               </div>
               <p>{{ currentSong.singer }}</p>
+              {{ currentSong }}
             </div>
             <div class="contImg">
               <img :src="currentSong.image" alt="">
