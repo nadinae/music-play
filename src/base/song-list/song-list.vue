@@ -19,6 +19,7 @@ export default {
   },
   methods:{
     chosePlaySong(item,index){
+      
      this.selectPlay({
        list:this.singerInfo,
        index:index 

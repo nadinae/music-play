@@ -21,6 +21,7 @@ import { commonParams,options } from '../../api/config'
 import { mapGetters } from 'vuex'
 import SongList from 'base/song-list/song-list'
 import {createList} from 'common/js/song'
+import { getVkey } from 'api/getVkey'
 export default {
   data(){
     return {
@@ -63,7 +64,12 @@ export default {
     jsonp('https://c.y.qq.com/v8/fcg-bin/fcg_v8_singer_track_cp.fcg', data, options).then((res)=>{
       // this.singerInfo = res.data.list;
       this.singerInfo = this.setSongList(res.data.list);
+      console.log(this.singerInfo)
     })
+    getVkey().then((res)=>{
+        console.log(res)
+    })
+    
   },
   methods:{
     goBack(){

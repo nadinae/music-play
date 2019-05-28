@@ -41,6 +41,7 @@ export default {
       _getSingerList(){
         getSingerList().then((res)=>{
           this.singerList = this._initSingetList(res.data.list);
+          console.log(this.singerList)
         })
       },
       _initSingetList(list){
