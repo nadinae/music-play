@@ -10,6 +10,7 @@
 </template>
 <script>
 import { mapActions } from 'vuex'
+import { getVkey } from 'api/getVkey'
 export default {
   props:{
     singerInfo:{
@@ -19,11 +20,14 @@ export default {
   },
   methods:{
     chosePlaySong(item,index){
-      
-     this.selectPlay({
-       list:this.singerInfo,
-       index:index 
-     })
+      getVkey().then((res)=>{
+        console.log(res.req.data.keepalivefile.split('?')[1])
+        this.selectPlay({
+          list:this.singerInfo,
+          index:index,
+          singAdd:res.req.data.keepalivefile.split('?')[1]
+        })
+      })
     },
      ...mapActions([
        'selectPlay'

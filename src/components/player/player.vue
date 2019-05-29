@@ -9,7 +9,6 @@
                 <h1>{{ currentSong.name }}</h1>
               </div>
               <p>{{ currentSong.singer }}</p>
-              {{ currentSong }}
             </div>
             <div class="contImg">
               <img :src="currentSong.image" alt="">
@@ -38,6 +37,7 @@
           <span></span>
         </div>
       </div>
+      <audio :src="currentSong.url+singAdd" autoplay></audio>
     </div>
 </template>
 <script>
@@ -47,11 +47,12 @@ export default {
       bgStyle(){
         return `background-image:url(${this.currentSong.image})`
       },
-        ...mapGetters([
-            'fullScreen',
-            'playList',
-            'currentSong'
-        ])
+      ...mapGetters([
+          'fullScreen',
+          'playList',
+          'currentSong',
+          'singAdd'
+      ])
     },
     methods:{
       close(){

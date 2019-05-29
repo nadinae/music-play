@@ -21,7 +21,6 @@ import { commonParams,options } from '../../api/config'
 import { mapGetters } from 'vuex'
 import SongList from 'base/song-list/song-list'
 import {createList} from 'common/js/song'
-import { getVkey } from 'api/getVkey'
 export default {
   data(){
     return {
@@ -66,10 +65,7 @@ export default {
       this.singerInfo = this.setSongList(res.data.list);
       console.log(this.singerInfo)
     })
-    getVkey().then((res)=>{
-        console.log(res)
-    })
-    
+
   },
   methods:{
     goBack(){

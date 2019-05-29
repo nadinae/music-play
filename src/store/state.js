@@ -6,6 +6,7 @@ const state = {
   playList:[],
   sequenceList:[],
   mode:playMode.sequence,
-  currentIndex:-1
+  currentIndex:-1,
+  singAdd:''
 }
 export default state;

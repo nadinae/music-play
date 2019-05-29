@@ -12,6 +12,8 @@ export const mode = state => state.mode
 
 export const currenceIndex = state => state.currenceIndex
 
+export const singAdd = state => state.singAdd
+
 export const currentSong = (state) => {
     return state.playList[state.currenceIndex] || {}
 }

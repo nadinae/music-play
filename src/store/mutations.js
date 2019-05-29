@@ -21,6 +21,9 @@ const mutations = {
   },
   [types.SET_CURRENCE_INDEX](state,index){
       state.currenceIndex = index
+  },
+  [types.SET_SINGER_ADD](state, singAdd) {
+    state.singAdd = singAdd
   }
 }
 
