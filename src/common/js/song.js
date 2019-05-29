@@ -20,7 +20,7 @@ export function createList(musicData){
     album: musicData.albumname,
     duration: musicData.interval,
     image: `https://y.gtimg.cn/music/photo_new/T002R300x300M000${musicData.albummid}.jpg?max_age=2592000`,
-    url: `http://221.180.147.13/amobile.music.tc.qq.com/C400${musicData.songmid}.m4a?`
+    url: `http://dl.stream.qqmusic.qq.com/C400${musicData.songmid}.m4a?guid=423710903&uin=840&fromtag=38&vkey=`
   })
 }
 

@@ -21,11 +21,12 @@ export default {
   methods:{
     chosePlaySong(item,index){
       getVkey().then((res)=>{
-        console.log(res.req.data.keepalivefile.split('?')[1])
+        console.log(res)
+        console.log(res.req.data.vkey)
         this.selectPlay({
           list:this.singerInfo,
           index:index,
-          singAdd:res.req.data.keepalivefile.split('?')[1]
+          singAdd:res.req.data.vkey
         })
       })
     },

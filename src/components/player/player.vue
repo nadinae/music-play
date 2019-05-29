@@ -37,7 +37,7 @@
           <span></span>
         </div>
       </div>
-      <audio :src="currentSong.url+singAdd" autoplay></audio>
+      <audio :src="currentSong.url+singAdd" ref="audio"></audio>
     </div>
 </template>
 <script>
@@ -53,6 +53,13 @@ export default {
           'currentSong',
           'singAdd'
       ])
+    },
+    watch:{
+      currentSong(){
+        this.$nextTick(() => {
+          this.$refs.audio.play()
+        })
+      }
     },
     methods:{
       close(){

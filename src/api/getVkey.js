@@ -4,7 +4,7 @@ export function getVkey(){
     const url = '/api/getVkey';
   
     const data = {
-        '-':'getplaysongvkey5481397544603483',
+        '-':'getplaysongvkey7577134160688888',
         g_tk: '650716250',
         loginUin: '1725875016',
         hostUin: 0,
