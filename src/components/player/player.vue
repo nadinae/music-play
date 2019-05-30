@@ -11,14 +11,21 @@
               <p>{{ currentSong.singer }}</p>
             </div>
             <div class="contImg">
-              <img :src="currentSong.image" alt="">
+              <img :src="currentSong.image" :class="playing ? 'cardRotate' : 'cardRotate cardPuse'">
+            </div>
+            <div class="progress flex">
+              <span class="timing">{{ format(currentTime) }}</span>
+              <div class="proBar">
+                <div class="pro" :style="widthStyle"></div>
+              </div>
+              <span class="time">{{ format(currentSong.duration) }}</span>
             </div>
             <div class="ctrlBox">
               <ul class="flex">
                 <li class="mode">列</li>
-                <li class="prev"></li>
-                <li class="togglePlay"></li>
-                <li class="next"></li>
+                <li class="prev" @click="prev"></li>
+                <li :class="playStatus" @click="ctrlPlay"></li>
+                <li class="next" @click="next"></li>
                 <li class="love"></li>
               </ul>
             </div>
@@ -26,55 +33,159 @@
       </div>
       <div class="mini-player flex" v-show="!fullScreen" @click="open">
         <div class="left flex">
-          <img :src="currentSong.image" alt="" class="singerImg">
+          <img :src="currentSong.image" alt="" class="singerImg" :class="playing ? 'cardRotate' : 'cardRotate cardPuse'">
           <div>
             <h2>{{ currentSong.name }}</h2>
             <p>{{ currentSong.singer }}</p>
           </div>
         </div>
         <div class="flex right">
-          <i></i>
+          <i @click.stop="ctrlPlay" :class="playStatus"></i>
           <span></span>
         </div>
       </div>
-      <audio :src="currentSong.url+singAdd" ref="audio"></audio>
+      <audio :src="currentSong.url+singAdd" ref="audio" @canplay="ready" @error="noplay" @timeupdate="upadtetime" @ended="playEnd"></audio>
     </div>
 </template>
 <script>
 import { mapGetters, mapMutations } from 'vuex'
+import { getVkey } from 'api/getVkey'
 export default {
-    computed:{
-      bgStyle(){
-        return `background-image:url(${this.currentSong.image})`
-      },
-      ...mapGetters([
-          'fullScreen',
-          'playList',
-          'currentSong',
-          'singAdd'
-      ])
+  data(){
+    return {
+      singReady:false,
+      currentTime:0,
+      progessWidth:'0%'
+    }
+  },
+  computed:{
+    bgStyle(){
+      return `background-image:url(${this.currentSong.image})`
     },
-    watch:{
-      currentSong(){
-        this.$nextTick(() => {
-          this.$refs.audio.play()
-        })
-      }
+    playStatus(){
+      return this.playing ? 'puse' : 'togglePlay'
     },
-    methods:{
-      close(){
-        this.setFullScreen(false)
-      },
-      open(){
-        this.setFullScreen(true)
-      },
-      ...mapMutations({
-        setFullScreen:'SET_FULL_SCREEN'
+    widthStyle(){
+      return `width:${this.progessWidth}`
+    },
+    ...mapGetters([
+        'fullScreen',
+        'playList',
+        'currentSong',
+        'singAdd',
+        'playing',
+        'currenceIndex'
+    ])
+  },
+  watch:{
+    currentSong(){
+      this.$nextTick(() => {
+        this.$refs.audio.play()
+      })
+    },
+    playing(newPlaying){
+      this.$nextTick(() => {
+        newPlaying ? this.$refs.audio.play() : this.$refs.audio.pause()
       })
     }
+  },
+  methods:{
+    toDou(num){
+      return num > 9 ? num : '0' + num
+    },
+    format(interval){
+      let m = interval/60 | 0;
+      let s = interval % 60 | 0;
+      return this.toDou(m) +':'+ this.toDou(s)
+    },
+    playEnd(){
+      this.setPlayingState(false)
+      this.progessWidth = '0%';
+    },
+    upadtetime(e){
+      this.currentTime = e.target.currentTime;
+      this.progessWidth = ((parseInt(e.target.currentTime) / this.currentSong.duration) - 0).toFixed(2) * 100 + '%';
+    },
+    ready(){
+      this.singReady = true;
+    },
+    noplay(){
+      this.singReady = false;
+    },
+    next(){
+      getVkey().then((res)=>{
+        this.setSingAdd(res.req.data.vkey)
+        if(this.singReady){
+          let index = this.currenceIndex + 1
+          if(index == this.playList.length){
+            index = 0;
+          }
+          this.setCurrentIndex(index)
+        }
+      })
+    },
+    prev(){
+      getVkey().then((res)=>{
+        this.setSingAdd(res.req.data.vkey)
+        if(this.singReady){
+          let index = this.currenceIndex - 1
+          if(index == -1){
+            index = this.playList.length-1;
+          }
+          console.log(this.playList.length-1)
+          this.setCurrentIndex(index)
+        }
+      })
+    },
+    close(){
+      this.setFullScreen(false)
+    },
+    open(){
+      this.setFullScreen(true)
+    },
+    ctrlPlay(){
+      this.setPlayingState(!this.playing)
+    },
+    ...mapMutations({
+      setFullScreen:'SET_FULL_SCREEN',
+      setPlayingState:'SET_PLAYING_STATE',
+      setSingAdd:'SET_SINGER_ADD',
+      setCurrentIndex:'SET_CURRENCE_INDEX'
+    })
+  }
 }
 </script>
 <style scoped>
+.progress{
+  align-items:center;
+  justify-content: center;
+  position:absolute;
+  bottom:130px;
+  width:100%;
+  color:#2c2c2c;
+}
+.proBar{
+  width:5rem;
+  height:2px;
+  border-radius:1px;
+  background:#2c2c2c;
+  margin:0 .2rem;
+  position:relative;
+}
+.proBar .pro{
+  height:2px;
+  background:#f8fa6b;
+  box-shadow:0 0 2px #f8fa6b;
+  border-radius:1px;
+  position:absolute;
+  top:0;
+  left:0;
+}
+.progress .timing{
+  display:block;
+  width:42px;
+  text-align:center;
+}
 .player{
     width:100%;
     position:absolute;
@@ -169,6 +280,10 @@ li.togglePlay{
   background:url('../../common/image/playBtn.png') no-repeat;
   background-size:100%;
 }
+li.puse{
+  background:url('../../common/image/puse.png') no-repeat;
+  background-size:100%;
+}
 li.next{
   background:url('../../common/image/next.png') no-repeat;
   background-size:100%;
@@ -208,17 +323,38 @@ li.love{
 }
 .mini-player .right i{
   display:block;
-  width:32px;
-  height:32px;
+  width:26px;
+  height:26px;
   background:url(../../common/image/playBtn.png) no-repeat;
   background-size:100%;
 }
 .mini-player .right span{
   display:block;
-  width:32px;
-  height:32px;
+  width:26px;
+  height:26px;
   background:url(../../common/image/musicMenu.png) no-repeat;
   background-size:100%;
   margin-left:10px;
+}
+.mini-player .right .puse{
+  background:url('../../common/image/puse.png') no-repeat;
+  background-size:100%;
+}
+@keyframes rotate{
+  from{
+    transform:rotate(0)
+  }
+	to{
+    transform:rotate(360deg)
+  }
+}
+.cardRotate{
+  animation-name:rotate;
+	animation-duration:45s;
+	animation-iteration-count:infinite;
+	animation-timing-function:linear;
+}
+.cardPuse{
+  animation-play-state: paused;
 }
 </style>
