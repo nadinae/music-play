@@ -21,7 +21,6 @@ export default {
   methods:{
     chosePlaySong(item,index){
       getVkey().then((res)=>{
-        console.log(res)
         console.log(res.req.data.vkey)
         this.selectPlay({
           list:this.singerInfo,

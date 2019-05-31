@@ -22,7 +22,7 @@
             </div>
             <div class="ctrlBox">
               <ul class="flex">
-                <li class="mode">列</li>
+                <li class="mode" @click="changeMode">{{ modeCtr }}</li>
                 <li class="prev" @click="prev"></li>
                 <li :class="playStatus" @click="ctrlPlay"></li>
                 <li class="next" @click="next"></li>
@@ -50,6 +50,8 @@
 <script>
 import { mapGetters, mapMutations } from 'vuex'
 import { getVkey } from 'api/getVkey'
+import {playMode} from 'common/js/config'
+import { randomList } from 'common/js/util'
 export default {
   data(){
     return {
@@ -68,13 +70,17 @@ export default {
     widthStyle(){
       return `width:${this.progessWidth}`
     },
+    modeCtr(){
+      return this.mode == playMode.sequence ? '列' : this.mode == playMode.loop ? '单' : '随'
+    },
     ...mapGetters([
         'fullScreen',
         'playList',
         'currentSong',
         'singAdd',
         'playing',
-        'currenceIndex'
+        'currenceIndex',
+        'mode'
     ])
   },
   watch:{
@@ -90,6 +96,15 @@ export default {
     }
   },
   methods:{
+    changeMode(){
+      this.setPlayMode((this.mode + 1) % 3);
+      if(this.mode == playMode.random){
+        this.setPlayList(randomList(this.playList))
+      }else{
+        this.setPlayList(this.playList)
+      }
+    },
+
     toDou(num){
       return num > 9 ? num : '0' + num
     },
@@ -99,8 +114,12 @@ export default {
       return this.toDou(m) +':'+ this.toDou(s)
     },
     playEnd(){
-      this.setPlayingState(false)
-      this.progessWidth = '0%';
+      if(this.mode == playMode.loop){
+        this.currentTime = 0;
+        this.$refs.audio.play();
+      }else{
+        this.next()
+      }
     },
     upadtetime(e){
       this.currentTime = e.target.currentTime;
@@ -150,7 +169,9 @@ export default {
       setFullScreen:'SET_FULL_SCREEN',
       setPlayingState:'SET_PLAYING_STATE',
       setSingAdd:'SET_SINGER_ADD',
-      setCurrentIndex:'SET_CURRENCE_INDEX'
+      setCurrentIndex:'SET_CURRENCE_INDEX',
+      setPlayMode:'SET_PLAY_MODE',
+      setPlayList:'SET_PLAYLIST'
     })
   }
 }
