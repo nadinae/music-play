@@ -51,7 +51,7 @@
 import { mapGetters, mapMutations } from 'vuex'
 import { getVkey } from 'api/getVkey'
 import {playMode} from 'common/js/config'
-import { randomList } from 'common/js/util'
+import { getRandomList } from 'common/js/util'
 export default {
   data(){
     return {
@@ -99,7 +99,7 @@ export default {
     changeMode(){
       this.setPlayMode((this.mode + 1) % 3);
       if(this.mode == playMode.random){
-        this.setPlayList(randomList(this.playList))
+        this.setPlayList(getRandomList(this.playList))
       }else{
         this.setPlayList(this.playList)
       }
@@ -173,6 +173,9 @@ export default {
       setPlayMode:'SET_PLAY_MODE',
       setPlayList:'SET_PLAYLIST'
     })
+  },
+  mounted(){
+    console.log(this.currentSong)
   }
 }
 </script>

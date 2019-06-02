@@ -4,7 +4,7 @@
       <i @click="goBack"></i>
       <h1>{{ singer.singerName }}</h1>
     </div>
-    <div class="singetImg">
+    <div class="singetImg" @click="randomList">
       <div :style="bgStyle" class="bgImg flex">
         <div class="flex">
           <i></i>
@@ -18,9 +18,11 @@
 <script>
 import jsonp from 'common/js/jsonp'
 import { commonParams,options } from '../../api/config'
-import { mapGetters } from 'vuex'
+import { mapGetters,mapActions } from 'vuex'
 import SongList from 'base/song-list/song-list'
 import {createList} from 'common/js/song'
+import { getVkey } from 'api/getVkey'
+
 export default {
   data(){
     return {
@@ -63,10 +65,23 @@ export default {
     jsonp('https://c.y.qq.com/v8/fcg-bin/fcg_v8_singer_track_cp.fcg', data, options).then((res)=>{
       // this.singerInfo = res.data.list;
       this.singerInfo = this.setSongList(res.data.list);
+      console.log(this.singerInfo)
     })
 
   },
   methods:{
+    randomList(){
+      if(this.singerInfo.length > 0){
+        console.log(this.singerInfo)
+        getVkey().then((res)=>{
+          console.log(res.req.data.vkey)
+          this.randomPlay({
+            list:this.singerInfo,
+            singAdd:res.req.data.vkey
+          })
+        })
+      }
+    },
     goBack(){
       this.$router.back()
     },
@@ -76,7 +91,10 @@ export default {
         ret.push(createList(item.musicData))
       })
       return ret;
-    }
+    },
+    ...mapActions([
+      'randomPlay'
+    ])
   }
 }
 </script>
