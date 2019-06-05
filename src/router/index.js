@@ -6,6 +6,7 @@ import Recommend from 'components/recommend/recommend'
 import Rank from 'components/Rank/Rank'
 import Singer from 'components/singer/singer'
 import SingerDetial from 'components/singer-detial/singer-detial'
+import DissList from 'components/diss-list/diss-list'
 
 Vue.use(Router)
 
@@ -13,7 +14,7 @@ export default new Router({
   routes: [
     {
       path: '',
-      redirect: '/singer'
+      redirect: '/recommend'
     },
     {
         path: '/search',
@@ -23,7 +24,13 @@ export default new Router({
     {
         path: '/recommend',
         name: 'recommend',
-        component: Recommend
+        component: Recommend,
+        children:[
+          {
+            path:':id',
+            component: DissList
+          }
+        ]
     },
     {
       path: '/rank',

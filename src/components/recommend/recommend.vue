@@ -12,11 +12,11 @@
         <div class="recommend-list">
             <h1 class="list-title">热门歌单推荐</h1>
             <ul>
-              <li v-for="(item,index) in DicsData" :key="index" class="flex">
+              <li v-for="(item,index) in DicsData" :key="index" class="flex" @click="goPlay(item.dissid)">
                 <img v-lazy="item.imgurl">
                 <div>
-                  <h2>{{ item.creator.name }}</h2>
-                  <p>{{ item.dissname }}</p>
+                  <h2>{{ item.dissname }}</h2>
+                  <p>{{ item.creator.name }}</p>
                 </div>
               </li>
             </ul>
@@ -46,18 +46,24 @@ export default {
         this._getDiscList()
     },
     methods:{
-        _getRecommend(){
-            getRecommend().then((res)=>{
-                if(res.code === ERR_OK){
-                    this.recommends = res.data.slider;
-                }
-            })
-        },
-        _getDiscList(){
-          getDiscList().then((res)=>{
-            this.DicsData = res.data.list;
+      goPlay(id){
+        this.$router.push({
+          path: `/recommend/${id}`
+        })
+      },
+      _getRecommend(){
+          getRecommend().then((res)=>{
+              if(res.code === ERR_OK){
+                  this.recommends = res.data.slider;
+              }
           })
-        }
+      },
+      _getDiscList(){
+        getDiscList().then((res)=>{
+          this.DicsData = res.data.list;
+          console.log(this.DicsData)
+        })
+      }
     }
 }
 </script>
