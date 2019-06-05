@@ -7,6 +7,7 @@ const state = {
   sequenceList:[],
   mode:playMode.sequence,
   currenceIndex:-1,
-  singAdd:''
+  singAdd:'',
+  dic:{}
 }
 export default state;

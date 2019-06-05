@@ -12,7 +12,7 @@
         <div class="recommend-list">
             <h1 class="list-title">热门歌单推荐</h1>
             <ul>
-              <li v-for="(item,index) in DicsData" :key="index" class="flex" @click="goPlay(item.dissid)">
+              <li v-for="(item,index) in DicsData" :key="index" class="flex" @click="goPlay(item)">
                 <img v-lazy="item.imgurl">
                 <div>
                   <h2>{{ item.dissname }}</h2>
@@ -22,6 +22,7 @@
             </ul>
         </div>
         <Loading v-if="!DicsData"></Loading>
+        <router-view></router-view>
     </div>
 </template>
 <script>
@@ -29,6 +30,7 @@ import Slider from 'base/slider/slider'
 import Loading from 'base/loading/loading'
 import {getRecommend,getDiscList} from 'api/recommend'
 import {ERR_OK} from 'api/config'
+import {mapMutations} from 'vuex'
 
 export default {
     data(){
@@ -46,10 +48,12 @@ export default {
         this._getDiscList()
     },
     methods:{
-      goPlay(id){
+      goPlay(item){
         this.$router.push({
-          path: `/recommend/${id}`
+          path: `/recommend/${item.dissid}`
         })
+        this.setDic(item);
+        
       },
       _getRecommend(){
           getRecommend().then((res)=>{
@@ -63,7 +67,10 @@ export default {
           this.DicsData = res.data.list;
           console.log(this.DicsData)
         })
-      }
+      },
+      ...mapMutations({
+        setDic:'SET_DIC'
+      })
     }
 }
 </script>

@@ -17,3 +17,5 @@ export const singAdd = state => state.singAdd
 export const currentSong = (state) => {
     return state.playList[state.currenceIndex] || {}
 }
+
+export const dic = state => state.dic

@@ -24,6 +24,9 @@ const mutations = {
   },
   [types.SET_SINGER_ADD](state, singAdd) {
     state.singAdd = singAdd
+  },
+  [types.SET_DIC](state, dic) {
+    state.dic = dic
   }
 }
 

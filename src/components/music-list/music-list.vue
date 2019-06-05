@@ -17,6 +17,8 @@
 </template>
 <script>
 import SongList from 'base/song-list/song-list'
+import {mapActions} from 'vuex'
+import { getVkey } from 'api/getVkey'
 export default {
   props:{
     title:{
@@ -51,6 +53,9 @@ export default {
     goBack(){
       this.$router.back()
     },
+    ...mapActions([
+      'randomPlay'
+    ])
   }
 }
 </script>
