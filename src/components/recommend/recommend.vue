@@ -53,7 +53,7 @@ export default {
           path: `/recommend/${item.dissid}`
         })
         this.setDic(item);
-        
+
       },
       _getRecommend(){
           getRecommend().then((res)=>{
@@ -77,6 +77,8 @@ export default {
 <style>
 .recommend{
   padding-top:13vh;
+  height:87vh;
+  overflow-y:scroll;
 }
 .list-title{
   font-size:.24rem;

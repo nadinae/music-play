@@ -48,6 +48,8 @@ export default {
               songname:item.name,
               albumname:item.album.name,
               interval:item.interval,
+              albummid:item.album.mid,
+              type:1
             })
           })
           console.log(songList)
