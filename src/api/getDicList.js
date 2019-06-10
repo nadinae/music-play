@@ -24,5 +24,4 @@ export function getDicList(disstid){
     }).then((res)=>{
         return Promise.resolve(res.data)
     })
-    
 }
