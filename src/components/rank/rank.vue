@@ -1,19 +1,21 @@
 <template>
     <div class="rank">
         <ul>
-            <li v-for="(item,index) in topList" :key="index" class="flex">
-                <img :src="item.picUrl" alt="">
+            <li v-for="(item,index) in topList" :key="index" class="flex" @click="selectItem(item)">
+                <img v-lazy="item.picUrl" alt="">
                 <div>
                     <h2>{{ item.topTitle }}</h2>
-                    <p v-for="(item2,index2) in item.songList" :key="index2" class="flex">{{ index2+1 }}.{{ item2.songname }}<span>--{{ item2.singername }}</span></p>
+                    <p v-for="(item2,index2) in item.songList" :key="index2" class="flex"><span>{{ index2+1 }}.{{ item2.songname }}</span><span>--{{ item2.singername }}</span></p>
                 </div>
             </li>
         </ul>
+        <router-view></router-view>
     </div>
 </template>
 <script>
-import {getRankList} from 'api/getRankList'
-import {ERR_OK} from 'api/config'
+import { getRankList } from 'api/getRankList'
+import { ERR_OK } from 'api/config'
+import { mapMutations } from 'vuex'
 export default {
     data(){
         return {
@@ -27,12 +29,20 @@ export default {
         _getRankList(){
             getRankList().then((res)=>{
                 if(res.code == ERR_OK){
-                    this.topList = res.data.topList;
-                    console.log(res.data.topList)
+                    this.topList = res.data.topList.slice(3);
                 }
             })
-        }
-    }
+        },
+        selectItem(item){
+          this.$router.push({
+            path:`/rank/${item.id}`
+          })
+          this.setTopList(item)
+        },
+        ...mapMutations({
+          setTopList:'SET_TOP_LIST'
+        })
+    },
 }
 </script>
 <style scoped>
@@ -50,6 +60,7 @@ li{
 img{
     width:100px;
     height:100px;
+    flex-shrink:0;
 }
 li div{
     flex:1;
@@ -65,13 +76,16 @@ li div p{
     align-items:center;
 }
 li div p span{
-    width:50%;
     display:inline-block;
     text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap;
 }
-li div p span{
+li div p span:first-child{
+    max-width:50%;
+}
+li div p span:last-child{
+    width:40%;
     color:rgba(0,0,0,0.5)
 }
 </style>

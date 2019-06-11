@@ -27,6 +27,9 @@ const mutations = {
   },
   [types.SET_DIC](state, dic) {
     state.dic = dic
+  },
+  [types.SET_TOP_LIST](state, topList) {
+    state.topList = topList
   }
 }
 

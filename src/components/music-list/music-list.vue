@@ -12,7 +12,7 @@
         </div>
       </div>
     </div>
-    <SongList :singerInfo="singerInfo"></SongList>
+    <SongList :singerInfo="singerInfo" :hasRank="hasRank"></SongList>
   </div>
 </template>
 <script>
@@ -32,6 +32,10 @@ export default {
     singerInfo:{
       type:Array,
       default:[]
+    },
+    hasRank:{
+      type:Number,
+      default:0
     }
   },
   components:{
@@ -69,6 +73,7 @@ export default {
     height:100vh;
     z-index:100;
     overflow-y:scroll;
+    padding-bottom:60px;
   }
   .header {
     padding-left:4%;

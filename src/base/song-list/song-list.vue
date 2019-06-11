@@ -1,9 +1,14 @@
 <template>
   <div class="songList">
       <ul>
-        <li v-for="(item,index) in singerInfo" @click="chosePlaySong(item,index)">
-          <h3>{{ item.name }}</h3>
-          <p>{{ item.singer+'-'+ item.album}}</p>
+        <li v-for="(item,index) in singerInfo" @click="chosePlaySong(item,index)" class="flex">
+          <div v-show="hasRank == 1 ? true : false" class="order">
+            <span :class="index < 3 ? 'icon'+index : ''">{{ index < 3 ? '' : index+1 }}</span>
+          </div>
+          <div class="song">
+            <h3>{{ item.name }}</h3>
+            <p>{{ item.singer+'-'+ item.album}}</p>
+          </div>
         </li>
       </ul>
     </div>
@@ -16,6 +21,10 @@ export default {
     singerInfo:{
       type:Array,
       default: () => []
+    },
+    hasRank:{
+      type:Number,
+      default:0
     }
   },
   methods:{
@@ -38,9 +47,11 @@ export default {
   .songList{
     width:90%;
     margin:0 auto;
+    padding-bottom:6vh;
   }
   .songList li{
     margin-top:20px;
+    align-items:center;
   }
   .songList h3,.songList p{
     width:100%;
@@ -53,5 +64,30 @@ export default {
   .songList p{
     color:rgba(0,0,0,.5);
     margin-top:4px;
+  }
+  .order{
+    margin-right:6px;
+  }
+  .song{
+    width:90%;
+  }
+  .order span{
+    display:block;
+    width:30px;
+    height:30px;
+    text-align:center;
+    line-height:30px;
+  }
+  .icon0{
+    background:url(0.png) no-repeat;
+    background-size:100% 100%;
+  }
+  .icon1{
+    background:url(1.png) no-repeat;
+    background-size:100% 100%;
+  }
+  .icon2{
+    background:url(2.png) no-repeat;
+    background-size:100% 100%;
   }
 </style>

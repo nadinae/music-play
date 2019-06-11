@@ -8,6 +8,7 @@ const state = {
   mode:playMode.sequence,
   currenceIndex:-1,
   singAdd:'',
-  dic:{}
+  dic:{},
+  topList:{}
 }
 export default state;

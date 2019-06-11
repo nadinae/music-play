@@ -15,3 +15,5 @@ export const SET_CURRENCE_INDEX = 'SET_CURRENCE_INDEX'
 export const SET_SINGER_ADD = 'SET_SINGER_ADD'
 
 export const SET_DIC = 'SET_DIC'
+
+export const SET_TOP_LIST = 'SET_TOP_LIST'
