@@ -1,29 +1,35 @@
 <template>
   <div class="search flex">
-    <searchInput></searchInput>
+    <searchInput ref="searchInput" @queryChange="onqueryChange"></searchInput>
     <div class="search-option">
       <h2>热门搜索</h2>
       <ul class="flex">
-        <li v-for="(item,index) in searchList">{{ item.k }}</li>
+        <li v-for="(item,index) in searchList" @click="setQuery(item.k)">{{ item.k }}</li>
       </ul>
+    </div>
+    <div>
+      <searchResult :query="query"></searchResult>
     </div>
   </div>
 </template>
 <script>
+import searchResult from 'components/search-result/search-result'
 import searchInput from 'base/search-input/search-input'
 import { getRandomSearch } from 'api/randomSearch'
 import { ERR_OK } from 'api/config'
 export default {
   data(){
     return {
-      searchList:[]
+      searchList:[],
+      query:''
     }
   },
   created(){
     this._getRandomSearch()
   },
   components:{
-    searchInput
+    searchInput,
+    searchResult
   },
   methods:{
     _getRandomSearch(){
@@ -33,6 +39,13 @@ export default {
           console.log(this.searchList)
         }
       })
+    },
+    setQuery(query){
+      this.$refs.searchInput.setQuery(query)
+    },
+    onqueryChange(query){
+      console.log(query)
+      this.query = query;
     }
   }
 }

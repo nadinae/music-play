@@ -15,7 +15,15 @@ export default {
   methods:{
     clear(){
       this.inputPlace = '';
+    },
+    setQuery(query){
+      this.inputPlace = query;
     }
+  },
+  created(){
+    this.$watch('inputPlace',(newInpPlace) => {
+      this.$emit('queryChange',newInpPlace)
+    })
   }
 }
 </script>
