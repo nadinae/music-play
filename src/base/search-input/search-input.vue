@@ -30,7 +30,7 @@ export default {
 <style scoped>
 .search-box{
   width:94vw;
-  margin:14vh auto 0;
+  margin:100px auto 0;
   background:#fff;
   height:32px;
   border-radius:4px;

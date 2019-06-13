@@ -7,9 +7,7 @@
         <li v-for="(item,index) in searchList" @click="setQuery(item.k)">{{ item.k }}</li>
       </ul>
     </div>
-    <div>
-      <searchResult :query="query"></searchResult>
-    </div>
+    <searchResult :query="query"></searchResult>
   </div>
 </template>
 <script>
