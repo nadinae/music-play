@@ -8,6 +8,7 @@
       </ul>
     </div>
     <searchResult :query="query"></searchResult>
+    <router-view></router-view>
   </div>
 </template>
 <script>

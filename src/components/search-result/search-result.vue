@@ -1,17 +1,19 @@
 <template>
   <div class="search-result">
     <ul>
-      <li v-for="(item,index) in resultList" :keys="index">
+      <li v-for="(item,index) in resultList" :keys="index" class="flex" @click="selectItem(item)">
         <i v-if="item.singerType" :style="bgStyle" :class="item.singerType ? 'singer' : ''"></i>
         <i v-else></i>
-        <p></p>
+        <p>{{ item.singerType ? item.singername : item.songname }}</p>
       </li>
     </ul>
   </div>
 </template>
 <script>
 import { getSearchResult } from 'api/search'
-import {ERR_OK} from 'api/config'
+import { ERR_OK } from 'api/config'
+import { mapMutations,mapActions } from 'vuex'
+import Singer from 'common/js/singer'
 const SINGET_TYPE = 'singer'
 export default {
   props:{
@@ -44,7 +46,27 @@ export default {
       if(list.data.song.list){
         return ret.concat(list.data.song.list)
       }
-    }
+    },
+    selectItem(item){
+      if(item.singerType){
+        const singer = new Singer({
+          imgSrc: item.singermid,
+          singerName:item.singername
+        })
+        this.$router.push({
+          path:`/search/${singer.imgSrc}`
+        })
+        this.setSinger(singer)
+      }else{
+        this.insertSong(item)
+      }
+    },
+    ...mapMutations({
+      setSinger:'SET_SINGER'
+    }),
+    ...mapActions([
+      'insertSong'
+    ])
   },
   watch:{
     query(query){
@@ -60,13 +82,30 @@ export default {
   left:0;
   width:100%;
   background:#fff;
-  flex: 1;
 }
 .singer{
   width:40px;
   height:40px;
+  border-radius:20px;
+  margin-bottom:4px;
+}
+ul{
+  width:94%;
+  margin:0 auto;
+  padding-top:20px;
+  max-height:70vh;
+  overflow-y:scroll;
+}
+li{
+  align-items:center;
+  border-bottom:1px solid #f4f4f4;
 }
 i{
+  width:40px;
+  height:40px;
+  background:url(music.png) center no-repeat;
+  background-size:20px 20px;
   display:block;
+  margin-right:10px;
 }
 </style>
