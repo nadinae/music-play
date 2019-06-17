@@ -4,7 +4,7 @@
       <li v-for="(item,index) in resultList" :keys="index" class="flex" @click="selectItem(item)">
         <i v-if="item.singerType" :style="bgStyle" :class="item.singerType ? 'singer' : ''"></i>
         <i v-else></i>
-        <p>{{ item.singerType ? item.singername : item.songname }}</p>
+        <p>{{ item.singerType ? item.singername : item.name }}</p>
       </li>
     </ul>
   </div>
@@ -14,6 +14,8 @@ import { getSearchResult } from 'api/search'
 import { ERR_OK } from 'api/config'
 import { mapMutations,mapActions } from 'vuex'
 import Singer from 'common/js/singer'
+import { createList } from 'common/js/song'
+import { getVkey } from 'api/getVkey'
 const SINGET_TYPE = 'singer'
 export default {
   props:{
@@ -44,8 +46,18 @@ export default {
         this.bgStyle = `background:url(https://y.gtimg.cn/music/photo_new/T001R68x68M000${list.data.zhida.singermid}.jpg?max_age=2592000) no-repeat;background-size:100% 100%`
       }
       if(list.data.song.list){
-        return ret.concat(list.data.song.list)
+       ret = ret.concat(this.getListSong(list.data.song.list))
       }
+      return ret
+    },
+    getListSong(list){
+      let ret = [];
+      list.forEach((item) => {
+        if(item.songid && item.albummid){
+          ret.push(createList(item))
+        }
+      })
+      return ret
     },
     selectItem(item){
       if(item.singerType){
@@ -58,11 +70,15 @@ export default {
         })
         this.setSinger(singer)
       }else{
-        this.insertSong(item)
+        this.setPlayList(this.resultList.slice(1))
+         getVkey().then((res)=>{
+          this.insertSong({item,singAdd:res.req.data.vkey})
+         })
       }
     },
     ...mapMutations({
-      setSinger:'SET_SINGER'
+      setSinger:'SET_SINGER',
+      setPlayList:'SET_PLAYLIST'
     }),
     ...mapActions([
       'insertSong'
