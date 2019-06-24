@@ -9,6 +9,7 @@ const state = {
   currenceIndex:-1,
   singAdd:'',
   dic:{},
-  topList:{}
+  topList:{},
+  searchHistory:[]
 }
 export default state;
