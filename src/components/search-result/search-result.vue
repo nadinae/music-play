@@ -16,6 +16,8 @@ import { mapMutations,mapActions } from 'vuex'
 import Singer from 'common/js/singer'
 import { createList } from 'common/js/song'
 import { getVkey } from 'api/getVkey'
+
+
 const SINGET_TYPE = 'singer'
 export default {
   props:{
@@ -35,7 +37,6 @@ export default {
       getSearchResult(this.query,1,1).then((res) => {
         if(res.code == ERR_OK){
           this.resultList = this.setResultList(res)
-          console.log(this.resultList)
         }
       })
     },
@@ -75,6 +76,7 @@ export default {
           this.insertSong({item,singAdd:res.req.data.vkey})
          })
       }
+      this.$emit('choseHistory',this.query)
     },
     ...mapMutations({
       setSinger:'SET_SINGER',
