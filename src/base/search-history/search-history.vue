@@ -46,7 +46,7 @@ i{
   font-size: 18px;
 }
 .title i{
-  background:url(delete.png) no-repeat;
+  background:url(../../common/image/delete.png) no-repeat;
   background-size:100% 100%;
 }
 .search-item{
@@ -55,7 +55,7 @@ i{
   opacity:0.6;
 }
 .search-item i{
-  background:url(remove.png) no-repeat;
+  background:url(../../common/image/remove.png) no-repeat;
   background-size:100% 100%;
 }
 </style>

@@ -50,13 +50,13 @@ input{
 i{
   width:18px;
   height:18px;
-  background:url(search.png) no-repeat;
+  background:url(../../common/image/search.png) no-repeat;
   background-size:100% 100%;
 }
 span{
   width:18px;
   height:18px;
-  background:url(close.png) no-repeat;
+  background:url(../../common/image/close.png) no-repeat;
   background-size:100% 100%;
 }
 </style>

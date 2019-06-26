@@ -8,15 +8,17 @@
           <li v-for="(item,index) in searchList" @click="setQuery(item.k)">{{ item.k }}</li>
         </ul>
       </div>
-      <searchHistoryList :searchHistory="searchHistory" @removeItem="onRemoveItem" v-show="searchHistory.length" @removeAllItem="onRemoveAllItem"></searchHistoryList>
+      <searchHistoryList :searchHistory="searchHistory" @removeItem="onRemoveItem" v-show="searchHistory.length" @removeAllItem="showMask"></searchHistoryList>
     </div>
     <searchResult :query="query" @choseHistory="onChangeHistory"></searchResult>
     <router-view></router-view>
+    <Confirm @cancelMask="hideMask" @confirmMask="onRemoveAllItem" v-show="toggleMask" :confirm="confirm" :contText="contText"></Confirm>
   </div>
 </template>
 <script>
 import searchResult from 'components/search-result/search-result'
 import searchInput from 'base/search-input/search-input'
+import Confirm from 'base/confirm/confirm'
 import { getRandomSearch } from 'api/randomSearch'
 import searchHistoryList from 'base/search-history/search-history'
 import { mapActions,mapGetters } from 'vuex'
@@ -26,7 +28,10 @@ export default {
     return {
       searchList:[],
       query:'',
-      searchHistoryList:[]
+      searchHistoryList:[],
+      toggleMask:false,
+      confirm:'清空',
+      contText:'你确定清空搜索列表吗？'
     }
   },
   created(){
@@ -40,7 +45,8 @@ export default {
   components:{
     searchInput,
     searchResult,
-    searchHistoryList
+    searchHistoryList,
+    Confirm
   },
   methods:{
     _getRandomSearch(){
@@ -62,7 +68,14 @@ export default {
     onRemoveItem(item){
       this.deleOneHistory(item)
     },
+    hideMask(){
+      this.toggleMask = false;
+    },
+    showMask(){
+      this.toggleMask = true;
+    },
     onRemoveAllItem(){
+      this.toggleMask = false;
       this.deleAllHistory()
     },
     ...mapActions([
