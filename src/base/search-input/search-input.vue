@@ -46,6 +46,7 @@ i,span{
 input{
   outline: none;
   flex:1;
+  border:none;
 }
 i{
   width:18px;

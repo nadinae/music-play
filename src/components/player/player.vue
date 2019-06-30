@@ -41,10 +41,11 @@
         </div>
         <div class="flex right">
           <i @click.stop="ctrlPlay" :class="playStatus"></i>
-          <span></span>
+          <span @click.stop="showFlag"></span>
         </div>
       </div>
       <audio :src="currentSong.url+singAdd" ref="audio" @canplay="ready" @error="noplay" @timeupdate="upadtetime" @ended="playEnd"></audio>
+      <PlayerList ref="playerList"></PlayerList>
     </div>
 </template>
 <script>
@@ -52,6 +53,7 @@ import { mapGetters, mapMutations } from 'vuex'
 import { getVkey } from 'api/getVkey'
 import {playMode} from 'common/js/config'
 import { getRandomList } from 'common/js/util'
+import PlayerList from 'components/player-list/player-list'
 export default {
   data(){
     return {
@@ -59,6 +61,9 @@ export default {
       currentTime:0,
       progessWidth:'0%'
     }
+  },
+  components:{
+    PlayerList
   },
   computed:{
     bgStyle(){
@@ -104,7 +109,9 @@ export default {
         this.setPlayList(this.playList)
       }
     },
-
+    showFlag(){
+      this.$refs.playerList.showMask()
+    },
     toDou(num){
       return num > 9 ? num : '0' + num
     },

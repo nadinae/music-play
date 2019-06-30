@@ -12,7 +12,7 @@
     </div>
     <searchResult :query="query" @choseHistory="onChangeHistory"></searchResult>
     <router-view></router-view>
-    <Confirm @cancelMask="hideMask" @confirmMask="onRemoveAllItem" v-show="toggleMask" :confirm="confirm" :contText="contText"></Confirm>
+  <Confirm @cancelMask="hideMask" @confirmMask="onRemoveAllItem" v-show="toggleMask" :confirm="confirm" :contText="contText"></Confirm>
   </div>
 </template>
 <script>

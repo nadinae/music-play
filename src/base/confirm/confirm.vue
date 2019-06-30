@@ -43,9 +43,10 @@ export default {
   bottom:0;
   right:0;
   background:rgba(0,0,0,0.6);
-  z-index:9999;
+  z-index:9999999;
   justify-content: center;
   align-items: center;
+  color:#000;
 }
 .content{
   width:70vw;
