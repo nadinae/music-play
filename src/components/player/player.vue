@@ -89,12 +89,19 @@ export default {
     ])
   },
   watch:{
-    currentSong(){
+    currentSong(newSong, oldSong){
+      if (!newSong.id) {
+          return
+        }
+        if (newSong.id === oldSong.id) {
+          return
+        }
       this.$nextTick(() => {
         this.$refs.audio.play()
       })
     },
     playing(newPlaying){
+      console.log(newPlaying)
       this.$nextTick(() => {
         newPlaying ? this.$refs.audio.play() : this.$refs.audio.pause()
       })
@@ -102,12 +109,21 @@ export default {
   },
   methods:{
     changeMode(){
+      let list = null;
       this.setPlayMode((this.mode + 1) % 3);
       if(this.mode == playMode.random){
-        this.setPlayList(getRandomList(this.playList))
+        list = getRandomList(this.playList)
       }else{
-        this.setPlayList(this.playList)
+        list = this.playList
       }
+      this.resetCurrentIndex(list)
+      this.setPlayList(list)
+    },
+    resetCurrentIndex(list) {
+      let index = list.findIndex((item) => {
+        return item.id === this.currentSong.id
+      })
+      this.setCurrentIndex(index)
     },
     showFlag(){
       this.$refs.playerList.showMask()
@@ -147,6 +163,10 @@ export default {
             index = 0;
           }
           this.setCurrentIndex(index)
+          console.log(this.playing)
+          if(!this.playing){
+            this.ctrlPlay()
+          }
         }
       })
     },
@@ -160,6 +180,10 @@ export default {
           }
           console.log(this.playList.length-1)
           this.setCurrentIndex(index)
+          console.log(this.playing)
+          if(!this.playing){
+            this.ctrlPlay()
+          }
         }
       })
     },
