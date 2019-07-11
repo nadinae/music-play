@@ -101,7 +101,6 @@ export default {
       })
     },
     playing(newPlaying){
-      console.log(newPlaying)
       this.$nextTick(() => {
         newPlaying ? this.$refs.audio.play() : this.$refs.audio.pause()
       })
@@ -163,7 +162,6 @@ export default {
             index = 0;
           }
           this.setCurrentIndex(index)
-          console.log(this.playing)
           if(!this.playing){
             this.ctrlPlay()
           }
@@ -178,9 +176,7 @@ export default {
           if(index == -1){
             index = this.playList.length-1;
           }
-          console.log(this.playList.length-1)
           this.setCurrentIndex(index)
-          console.log(this.playing)
           if(!this.playing){
             this.ctrlPlay()
           }
@@ -204,9 +200,6 @@ export default {
       setPlayMode:'SET_PLAY_MODE',
       setPlayList:'SET_PLAYLIST'
     })
-  },
-  mounted(){
-    console.log(this.currentSong)
   }
 }
 </script>
