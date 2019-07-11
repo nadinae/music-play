@@ -15,10 +15,11 @@
           <i @click.stop="deleSong(item)"></i>
         </li>
       </ul>
+      <div class="add_song_btn" @click="showAddSong">添加歌曲到列表</div>
       <p class="close" @click="hideMask">关闭</p>
     </div>
   </div>
-  
+  <AddSong ref="add_song"></AddSong>
   <Confirm ref="confirm" @confirmMask="deletAll" @cancelMask="hideConfirmMask" v-show="toggleShow" :confirm="confirm" :contText="contText"></Confirm>
 </div>
 </template>
@@ -26,6 +27,7 @@
 import Confirm from 'base/confirm/confirm'
 import { mapGetters,mapMutations,mapActions } from 'vuex'
 import { playMode } from 'common/js/config'
+import AddSong from 'components/add_song/add_song'
 export default {
   data(){
     return {
@@ -36,7 +38,8 @@ export default {
     }
   },
   components:{
-    Confirm
+    Confirm,
+    AddSong
   },
   computed:{
     ...mapGetters([
@@ -47,6 +50,9 @@ export default {
     ])
   },
   methods:{
+    showAddSong(){
+      this.$refs.add_song.show();
+    },
     deletAll(){
       this.daletAllSong()
     },
@@ -100,7 +106,7 @@ export default {
   bottom:0;
   right:0;
   background:rgba(0,0,0,0.6);
-  z-index:1111111;
+  z-index:111;
 }
 .playBox{
   width:100%;
@@ -167,5 +173,13 @@ export default {
 }
 .playBox ul p{
   color:#000;
+}
+.add_song_btn{
+  text-align:center;
+  color:#000;
+  font-size:14px;
+  height:40px;
+  line-height:40px;
+  background:#ccc;
 }
 </style>
