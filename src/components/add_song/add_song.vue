@@ -2,14 +2,14 @@
     <div class="add_song_wrampper" v-show="showFlag">
         <div class="add_title">
             <p>添加歌曲到列表</p>
-            <i></i>
+            <i @click.stop="hide"></i>
         </div>
         <div class="dearch_box_wrapper">
-            <SearchInp @query="search"></SearchInp>
+            <SearchInp @queryChange="onqueryChange" :inputPlace="query"></SearchInp>
         </div>
         <div class="shortcut"></div>
-        <div class="search_result">
-            <SearchResult></SearchResult>
+        <div class="add_song_search_result">
+            <SearchResult :query="query"></SearchResult>
         </div>
     </div>
 </template>
@@ -34,7 +34,7 @@ export default{
         hide(){
             this.showFlag = false;
         },
-        search(){
+        onqueryChange(query){
             this.query = query;
         }
     }
@@ -70,5 +70,15 @@ export default{
 }
 .dearch_box_wrapper{
     margin-top:-10vh;
+}
+.add_song_search_result{
+  position:relative;
+}
+.add_song_search_result .search-result{
+  color:#000;
+  top:20px;
+}
+.add_song_search_result .search-result ul{
+  padding:0;
 }
 </style>

@@ -110,9 +110,11 @@ export default {
 ul{
   width:94%;
   margin:0 auto;
-  padding-top:20px;
   max-height:70vh;
   overflow-y:scroll;
+}
+li:first-child{
+  padding-top:20px;
 }
 li{
   align-items:center;
