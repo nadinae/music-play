@@ -41,6 +41,7 @@ i{
   align-items: center;
   justify-content: space-between;
   padding:0 5vw;
+  color:#000;
 }
 .title h2{
   font-size: 18px;

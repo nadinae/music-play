@@ -54,6 +54,8 @@ export default {
       this.$refs.add_song.show();
     },
     deletAll(){
+      this.showFlag = false;
+      this.toggleShow = false;
       this.daletAllSong()
     },
     showConfirmMask(){

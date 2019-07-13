@@ -49,7 +49,7 @@
     </div>
 </template>
 <script>
-import { mapGetters, mapMutations } from 'vuex'
+import { mapGetters, mapMutations,mapActions } from 'vuex'
 import { getVkey } from 'api/getVkey'
 import {playMode} from 'common/js/config'
 import { getRandomList } from 'common/js/util'
@@ -149,6 +149,7 @@ export default {
     },
     ready(){
       this.singReady = true;
+      this.savePlayHistory(this.currentSong)
     },
     noplay(){
       this.singReady = false;
@@ -199,7 +200,10 @@ export default {
       setCurrentIndex:'SET_CURRENCE_INDEX',
       setPlayMode:'SET_PLAY_MODE',
       setPlayList:'SET_PLAYLIST'
-    })
+    }),
+    ...mapActions([
+      'savePlayHistory'
+    ])
   }
 }
 </script>

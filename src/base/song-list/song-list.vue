@@ -60,6 +60,7 @@ export default {
     white-space: nowrap;
     font-size:16px;
     line-height:20px;
+    color:#000;
   }
   .songList p{
     color:rgba(0,0,0,.5);

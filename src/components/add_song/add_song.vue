@@ -9,25 +9,63 @@
         </div>
         <div class="shortcut"></div>
         <div class="add_song_search_result">
-            <SearchResult :query="query"></SearchResult>
+            <SearchResult :query="query" @choseHistory="onChangeHistory"></SearchResult>
+        </div>
+        <SwitchItem :switchArray="switchArray" :currentIndex="currentIndex" @selectIndex="choseItem"></SwitchItem>
+        <div class="list-wrapper" v-show="currentIndex == 0 ? true : false">
+            <SongList :singerInfo="playHistory">{{playHistory}}</SongList>
+        </div>
+        <div class="list-search" v-show="currentIndex == 1 ? true : false">
+            <SearchHistory :searchHistory="searchHistory" @removeItem="removeOne" @removeAllItem="removeAll"></SearchHistory>
         </div>
     </div>
 </template>
 <script>
 import SearchInp from 'base/search-input/search-input'
 import SearchResult from 'components/search-result/search-result'
+import {mapActions,mapGetters} from 'vuex'
+import SwitchItem from 'base/switch/switch'
+import SongList from 'base/song-list/song-list'
+import SearchHistory from 'base/search-history/search-history'
 export default{
     data(){
         return {
             showFlag:false,
-            query:''
+            query:'',
+            switchArray:[
+                {name:'最近搜索'},
+                {name:'搜索历史'}
+            ],
+            currentIndex:0
         }
     },
     components:{
         SearchInp,
-        SearchResult
+        SearchResult,
+        SwitchItem,
+        SongList,
+        SearchHistory
+    },
+    computed:{
+        ...mapGetters([
+            'playHistory',
+            'searchHistory'
+        ])
     },
     methods:{
+        removeOne(item){
+            this.deleOneHistory(item)
+        },
+        removeAll(){
+            this.deleAllHistory()
+        },
+        choseItem(index){
+            console.log(index)
+            this.currentIndex = index;
+        },
+        onChangeHistory(query){
+            this.saveHistory(query)
+        },
         show(){
             this.showFlag = true;
         },
@@ -36,7 +74,15 @@ export default{
         },
         onqueryChange(query){
             this.query = query;
-        }
+        },
+        ...mapActions([
+            'saveHistory',
+            'deleOneHistory',
+            'deleAllHistory'
+        ])
+    },
+    mounted(){
+        console.log(this.playHistory)
     }
 }
 </script>
