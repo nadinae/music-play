@@ -10,9 +10,10 @@
 
 ## 项目截图
 
-![avatar](/src/common/image/recommend.png);![avatar](/src/common/image/singer.png);![avatar](/src/common/image/rank.png);![avatar](/src/common/image/searchPage.png);
+![avatar](/src/common/image/recommend.png)![avatar](/src/common/image/singer.png)![avatar](/src/common/image/rank.png)![avatar](/src/common/image/searchPage.png)
 
 ## 下载
 
-执行命令：npm install
-执行命令：npm run dev
+`npm install`
+
+`npm run dev`
